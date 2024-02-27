@@ -28,6 +28,204 @@ public class my_tetrino_data : MonoBehaviour
     }
 
 
+
+    public GameObject[] GetTitrinoArray {get { return my_tetrino_array; } }
+
+    public void MyRotation(bool _isPositive)
+    {
+        if(_isPositive)
+        {
+            my_rotation++;
+            my_rotation = my_rotation % 4;
+        }
+        else
+        {
+            my_rotation--;
+            if (my_rotation < 0)
+                my_rotation = 3;
+        }
+
+        MyRotationType(my_type, my_rotation); 
+    }
+
+    private void MyRotationType(TetrinoFigure _figure, int _rot)
+    {
+        switch (_rot)
+        {
+            case 0:
+                if(_figure == TetrinoFigure.L)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0,0,0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(1, -1, 0);
+                }
+                
+                else if(_figure == TetrinoFigure.T)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, 1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.I)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -2, 0);
+                }
+
+                else if (_figure == TetrinoFigure.Z)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(1, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.O)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
+                }
+                break;
+
+            case 1:
+                if (_figure == TetrinoFigure.L)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(1, 1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.T)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(-1, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.I)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(2, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.Z)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, 1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.O)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
+                }
+                break;
+
+            case 2:
+                if (_figure == TetrinoFigure.L)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(-1, 1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.T)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.I)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -2, 0);
+                }
+
+                else if (_figure == TetrinoFigure.Z)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(1, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.O)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
+                }
+                break;
+
+            case 3:
+                if (_figure == TetrinoFigure.L)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(-1, -1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.T)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(0, 1, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(0, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(1, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.I)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(2, 0, 0);
+                }
+
+                else if (_figure == TetrinoFigure.Z)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, 1, 0);
+                }
+
+                else if (_figure == TetrinoFigure.O)
+                {
+                    my_tetrino_array[0].transform.localPosition = new Vector3(0, 0, 0);
+                    my_tetrino_array[1].transform.localPosition = new Vector3(-1, 0, 0);
+                    my_tetrino_array[2].transform.localPosition = new Vector3(-1, -1, 0);
+                    my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
+                }
+                break;
+
+
+            default: break;
+        }
+
+    }
+
     public void MyInitialize(TetrinoFigure _mytype)
     {
 
