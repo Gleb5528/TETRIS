@@ -290,7 +290,7 @@ public class my_tetrino_data : MonoBehaviour
                 obI3.AddComponent<my_tetrino_segment>();
                 obI3.transform.SetParent(transform, false);
 
-                GameObject obI4 = Instantiate(pref_cube, new Vector3(0, 1, 0), Quaternion.identity);
+                GameObject obI4 = Instantiate(pref_cube, new Vector3(0, 2, 0), Quaternion.identity);
                 obI4.AddComponent<my_tetrino_segment>();
                 obI4.transform.SetParent(transform, false);
 

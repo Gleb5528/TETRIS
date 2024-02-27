@@ -2,21 +2,84 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour
+public struct MyHud
+{
+    public Text txt_score;
+    public int my_int_score;
+
+    public Text txt_highscore;
+    public int my_int_highscore;
+
+    public Text txt_line;
+    private int my_int_line;
+
+    public Text txt_level;
+
+    public int my_int_level { get; private set; }
+
+    public float my_speed;
+
+    private int my_counter_line;
+
+    public void AddScore(int _score)
+    {
+        my_int_score += _score;
+        //my_int_highscore = (int)my_int_score;
+        txt_score.text = my_int_score.ToString();   
+    }
+
+    //public void AddHighScore(int _highscore)
+    //{
+     
+
+    //    my_int_highscore += _highscore;
+    //    txt_score.text = my_int_score.ToString();
+    //}
+
+    public void AddLine(int _line)
+    {
+        my_int_line += _line;
+        txt_line.text = my_int_line.ToString();
+
+        my_counter_line += _line;
+        if (my_counter_line > 9)
+            AddLevel(1);
+        my_counter_line = my_counter_line % 10;
+    }
+
+    public void AddLevel(int _level)
+    {
+        my_int_level += _level;
+        txt_level.text = my_int_level.ToString();
+        my_speed -= my_int_level > 5 ? 0.02f : 0.05f;
+    }
+}
+
+public class my_main : MonoBehaviour
 {
     private const int wid = 13, hei = 21;
     private float my_step = 1;
     private float my_curr_time;
 
-    private float my_speed;
+    
     private GameObject pref_tetrino;
     private Object pref_tetrino_object;
-    private my_tetrino_figure my_figure;
 
+    private my_tetrino_figure my_figure;
+    private TetrinoFigure my_figure_random;
 
     private my_tetrino_element[,] my_array;
+    private MyHud my_hub;
+
+    private my_tittle_figure my_tittle;
+
+
+    
 
     private void Start()
     {
@@ -25,8 +88,21 @@ public class NewBehaviourScript : MonoBehaviour
 
         pref_tetrino = Resources.Load("my_prefab/my_tetrino_figure") as GameObject;
         pref_tetrino_object = Resources.Load("my_prefab/my_prefab_tetrino_o");
-        my_speed = 0.5f;
-        CreteFigure(TetrinoFigure.T);
+        my_tittle = FindObjectOfType<my_tittle_figure>();
+
+        my_hub.txt_score = GameObject.FindGameObjectWithTag("my_score").GetComponent<Text>();
+        my_hub.txt_highscore = GameObject.FindGameObjectWithTag("my_highscore").GetComponent<Text>();
+        my_hub.txt_line = GameObject.FindGameObjectWithTag("my_line").GetComponent<Text>();
+        my_hub.txt_level = GameObject.FindGameObjectWithTag("my_level").GetComponent<Text>();
+
+        my_hub.my_speed = 0.5f;
+        my_hub.AddLevel(1);
+
+        my_figure_random = CreateRandomFigure();
+         CreteFigure(my_figure_random);
+        my_figure_random = CreateRandomFigure();
+
+        my_tittle.GetComponentInChildren<my_tetrino_data>().MyInitialize(my_figure_random);
 
         for(int y = 0; y < hei; y++)
             for(int x = 0; x < wid; x++)
@@ -40,7 +116,10 @@ public class NewBehaviourScript : MonoBehaviour
 
     }
 
-
+    private TetrinoFigure CreateRandomFigure()
+    {
+        return (TetrinoFigure)Random.Range(0, 5);
+    }
     private void CreteFigure(TetrinoFigure _figure)
     {
         my_figure = Instantiate(pref_tetrino, new Vector3(my_step * 6, my_step * (hei - 2),0),
@@ -48,7 +127,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         my_figure.GetComponentInChildren<my_tetrino_data>().MyInitialize(_figure);
 
-        StartCoroutine(my_update(my_speed));
+        StartCoroutine(my_update(my_hub.my_speed));
     }
 
     private IEnumerator my_update(float _time)
@@ -65,7 +144,17 @@ public class NewBehaviourScript : MonoBehaviour
         AddToAray();
         Destroy(my_figure.gameObject);
         MyRemoveFullLine();
-        CreteFigure(TetrinoFigure.L);
+
+        if (!IsGameOver())
+        {
+            CreteFigure(my_figure_random);
+            my_figure_random = CreateRandomFigure();
+            my_tittle.GetComponentInChildren<my_tetrino_data>().MyInitialize(my_figure_random);
+        }
+        else
+        {
+
+        }
 
     }
 
@@ -92,6 +181,8 @@ public class NewBehaviourScript : MonoBehaviour
         {
             for (int x = 0; x < wid; x++)
                 my_array[x, removeline[ind]].set_tetrino_active(false);
+
+            my_hub.AddScore(removeline.Length == 4 ? 750 : 350);
         }
 
         if(removeline.Length != 0)
@@ -100,6 +191,10 @@ public class NewBehaviourScript : MonoBehaviour
             bool[,] arr_new_tetrino = new bool[wid, hei];
 
             int start_y = 0;
+
+            my_hub.AddLine(removeline.Length);
+
+
             for (int y = 0; y < hei; y++)
             {
                 if (MySkipTheLine(empty_line, y)) 
@@ -115,8 +210,24 @@ public class NewBehaviourScript : MonoBehaviour
             MySetNewTetrinoArray(arr_new_tetrino);
         }
     }
-
-
+    
+    public void MyOnStartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void MyOnPause(bool _isPause)
+    {
+        Time.timeScale = _isPause ? 0 : 1;
+    }
+    private bool IsGameOver()
+    {
+        for (int ind = 0; ind < wid; ind++)
+        {
+            if(my_array[ind, hei-3].get_isActive_tetrino())
+                return true;
+        } 
+        return false;
+    }
     private void MySetNewTetrinoArray(bool[,] _arr_new)
     {
         for (int y = 0; y < hei; y++)
@@ -211,6 +322,8 @@ public class NewBehaviourScript : MonoBehaviour
                 MyInputPress(MyDirectionTetrino.RIGHT, 0.2f);
             else if (Input.GetButton("LeftTetrino"))
                 MyInputPress(MyDirectionTetrino.LEFT, 0.2f);
+
+           
 
         }
     }
