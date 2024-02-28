@@ -1,11 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-
 public enum TetrinoFigure { L, Z, I, O, T }
-
 public class my_tetrino_data : MonoBehaviour
 {
     private GameObject pref_cube;
@@ -16,21 +12,17 @@ public class my_tetrino_data : MonoBehaviour
 
     private TetrinoFigure my_type;
 
+    
 
     private void Awake()
     {
         my_rotation = 0;
         my_tetrino_array = new GameObject[4];
-
-
         pref_cube = Resources.Load("my_prefab/my_prefab_cube") as GameObject;
-
     }
 
-
-
+    
     public GameObject[] GetTitrinoArray {get { return my_tetrino_array; } }
-
     public void MyRotation(bool _isPositive)
     {
         if(_isPositive)
@@ -44,10 +36,8 @@ public class my_tetrino_data : MonoBehaviour
             if (my_rotation < 0)
                 my_rotation = 3;
         }
-
         MyRotationType(my_type, my_rotation); 
     }
-
     private void MyRotationType(TetrinoFigure _figure, int _rot)
     {
         switch (_rot)
@@ -219,19 +209,13 @@ public class my_tetrino_data : MonoBehaviour
                     my_tetrino_array[3].transform.localPosition = new Vector3(0, -1, 0);
                 }
                 break;
-
-
             default: break;
         }
-
     }
-
     public void MyInitialize(TetrinoFigure _mytype)
     {
-
         for (int ind = 0; ind < transform.childCount; ind++)
             Destroy(transform.GetChild(ind).gameObject);
-
         switch(_mytype)
         {
             case TetrinoFigure.L:
@@ -342,12 +326,5 @@ public class my_tetrino_data : MonoBehaviour
             default:
                 break;
         }
-
-
-
     }
-
-
-
-
 }
